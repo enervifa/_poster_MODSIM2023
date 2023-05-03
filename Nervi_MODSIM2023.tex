@@ -1,0 +1,63 @@
+\documentclass[a4paper,fleqn]{article} %Options in documentclass should be set to a4paper and fleqn.
+\usepackage{modsim}
+\usepackage{times}
+\usepackage{natbib} %The three packages modsim, times and natbib are required.
+\usepackage{amsmath, amssymb, amsthm} %Also recommend the standard AMS LaTeX maths packages.
+
+\pagestyle{MODSIMheadings} %Calling the MODSIM Headings format
+\MODSIMhead{Chan and Pauwels, Unit roots and structural breaks in panel...} %This is the content of the headings in all pages (except the first page). The format should be author, title of paper. If the title is too long, then use ... at the end. If more than two authors, then please use the "et al." format with et al. in italic, for example A. Author {\it et al.}, Title of the paper.
+
+% Define any other command or required packages below:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{rotating}
+\usepackage{amsbsy,enumerate}
+\usepackage{graphicx}
+\usepackage{ccaption}
+%\usepackage{academicons}
+\usepackage{xcolor}
+\usepackage[allbordercolors=white]{hyperref}
+%\definecolor{orcidlogocol}{HTML}{A6CE39}
+\setlength{\bibsep}{0.0pt}
+\newcommand{\orcid}[1] {\hspace*{-1.5mm} \href{https://orcid.org/#1}{\includegraphics[scale=1.0]{orcid1.jpg}}}
+
+\bibpunct{[}{]}{;}{a}{,}{,~}
+
+
+% Text to appear in the header of the pages
+\MODSIMhead{Chan {\it et al.}, MODSIM 2023 instructions for authors and presenters}
+
+\title{SWAT Forestry Flow Scale} %title of your paper
+
+\author{\underline{E. Nervu} %underline the presenter of the paper
+ \address[A1]{\it{FPTA 358, INIA Uruguay }} \orcid{0000-0000-0000-0000}, J. Alonso \address[B1]{\it{Universidad de la República, GPO Box 987, Somewhere else, SomeCountry}}, W. Vervoort \address[C1]{\it{The University of Sydney, GPO Box 987, Somewhere else, SomeCountry}},and W. Baetghen \addressmark[D1],\address[D1]{\it{IRI Columbia, GPO Box 987, Somewhere else, SomeCountry}}
+}
+
+\email{email address of presenting author only}
+
+\begin{document}
+
+\begin{abstract}
+
+Forestry growth in UY. Experimental data at microscale. Potential use to scale models as SWAT. La Corona in Borracho example. Two Scenarios in forestry and results how change in potential forestry area affects flow. How this is affected by location in subbasin?, Discusion lines using global datasets, We migth need to include climate scenarios also?
+
+
+The implementation of SWAT 2012 in the Borracho catchment in Uruguay resulted in the creation of 481 hydrologic response units (HRUs). The model was then calibrated in SWATCUP using different strategies, 1) including calibration on flow standard parameters, 2) calibration on flow and evapotranspiration (ET) from MODIS, 3) calibration only on flow standard parameters but with specific parameters for Uy forestry, and 4) calibration on flow, ET, and specific parameters for Uy Forestry. Once the calibration was completed, various scenarios were evaluated to understand their potential impact. The results of the scenarios were heavily influenced by the data availability and quality, as well as the calibration process.  Accurate calibration and reliable data are critical to obtaining meaningful and actionable insights from scenario modeling. The findings from this study can help decision-makers and stakeholders make informed decisions about the management of water resources in the Borracho catchment and beyond.
+
+ It is essential to note that the availability and quality of data, as well as the calibration process, have a significant influence on the scenarios' results. Therefore, it is crucial to use reliable data and calibration strategies when modeling scenarios to obtain accurate and useful information for decision-making.
+ 
+\end{abstract}
+
+\begin{keyword}
+Please provide 3 to 5 keywords separated by commas. (Note extra keywords will be deleted.) The term ‘Keywords:’ should be bolded. The keywords should not be in bold. Keywords should be separated by commas. Keywords should be listed in Sentence case (first keyword with capital first letter and remaining keywords in lower case)
+\end{keyword}
+
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{agsm}
+\bibliography{modsim}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+	
+\end{document}

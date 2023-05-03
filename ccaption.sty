@@ -1,0 +1,216 @@
+%%
+%% This is file `ccaption.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% ccaption.dtx  (with options: `usc')
+%% 
+%% Author: Peter Wilson (CUA and NIST)
+%%         now at: peter.r.wilson@boeing.com
+%%  Copyright 1998, 1999 Peter R. Wilson
+%% 
+%%  This program is provided under the terms of the
+%%  LaTeX Project Public License distributed from CTAN
+%%  archives in directory macros/latex/base/lppl.txt.
+%% 
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{ccaption}[1999/09/20 v2.4 Extended captioning and new floats]
+\newif\if@contsubfigxx
+\@contsubfigxxfalse
+\DeclareOption{subfigure20}{\@contsubfigxxtrue}
+\ProcessOptions
+\newcommand{\contcaption}{\@contcaption\@captype}
+\long\def\@contcaption#1#2{%
+  \begingroup
+     \@parboxrestore
+     \if@minipage
+       \@setminipage
+     \fi
+     \normalsize
+     \@makecaption{\csname fnum@#1\endcsname}{\ignorespaces #2}\par
+  \endgroup}
+\newlength{\abovelegendskip}
+\setlength{\abovelegendskip}{0.5\baselineskip}
+\newlength{\belowlegendskip}
+\setlength{\belowlegendskip}{\abovelegendskip}
+\newcommand{\legend}[1]{%
+  \par
+  \begingroup
+     \@parboxrestore
+     \if@minipage
+       \@setminipage
+     \fi
+     \normalsize
+     \@makelegend{}{\ignorespaces \formatlegend{#1}}\par
+  \endgroup}
+\newcommand{\formatlegend}[1]{#1}
+\AtBeginDocument{%
+  \@ifpackageloaded{caption2}{%
+    \newcommand{\@makelegend}[2]{%
+      \vskip\abovelegendskip
+      \realcaptionwidth\linewidth
+      \def\captionlabel{#1}%
+      \def\captiontext{#2}%
+      \usecaptionstyle{\caption@style}%
+      \vskip\belowlegendskip}}{%
+    \newcommand{\@makelegend}[2]{%
+      \vskip\abovelegendskip
+      \sbox\@tempboxa{#1 #2}%
+      \ifdim \wd\@tempboxa >\hsize
+        #1 #2\par
+      \else
+        \global \@minipagefalse
+        \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
+      \fi
+      \vskip\belowlegendskip}}
+}
+\newcommand{\namedlegend}{\@dblarg{\@legend\@captype}}
+\long\def\@legend#1[#2]#3{%
+  \par
+  \csname flegtoc@#1\endcsname{#2}%
+  \begingroup
+    \@parboxrestore
+    \if@minipage
+      \@setminipage
+    \fi
+    \normalsize
+    \@makelegend{\csname fleg@#1\endcsname}{\formatlegend{#3}}\par
+  \endgroup}
+\newcommand{\flegtoc@table}[1]{}
+\newcommand{\flegtoc@figure}[1]{}
+\newcommand{\fleg@table}{\tablename: }
+\newcommand{\fleg@figure}{\figurename: }
+\newcommand{\newfixedcaption}[3][\caption]{%
+  \newcommand{#2}{\def\@captype{#3}#1}}
+\newcommand{\renewfixedcaption}[3][\caption]{%
+  \renewcommand{#2}{\def\@captype{#3}#1}}
+\newcommand{\providefixedcaption}[3][\caption]{%
+  \providecommand{#2}{\def\@captype{#3}#1}}
+\newcounter{newflo@tctr}
+\@ifundefined{c@figure}{\setcounter{newflo@tctr}{1}}{
+  \@ifundefined{c@table}{\setcounter{newflo@tctr}{2}}{
+    \setcounter{newflo@tctr}{4}}}
+\newcommand{\newfloatenv}[4][*]{%
+  \@ifundefined{c@#2}{%
+    \def\opt@rg{#1}
+    \ifcat*\opt@rg
+      \newcounter{#2}
+    \else
+      \@ifundefined{c@#1}{\PackageWarning{ccaption}%
+                          {#1 has no counter for use as a `within'}
+        \newcounter{#2}}%
+      {\newcounter{#2}[#1]%
+       \expandafter\edef\csname the#2\endcsname{%
+         \expandafter\noexpand\csname the#1\endcsname.\noexpand\arabic{#2}}}
+    \fi
+    \@namedef{ftype@#2}{\value{newflo@tctr}} % float type
+    \addtocounter{newflo@tctr}{\value{newflo@tctr}}
+    \@namedef{fps@#2}{tbp}                   % default positioning
+    \@namedef{ext@#2}{#3}                    % file extension
+    \@namedef{fnum@#2}{#4~\@nameuse{the#2}}  % caption naming
+    \@namedef{fleg@#2}{#4: }                 % named legend naming
+    \@namedef{flegtoc@#2}##1{}                % legend title to listof
+    \@namedef{l@#2}{\@dottedtocline{1}{1.5em}{2.3em}}%
+    \newenvironment{#2}{\@float{#2}}{\end@float}
+    \newenvironment{#2*}{\@dblfloat{#2}}{\end@dblfloat}
+   }{%
+     \PackageError{ccaption}{#2 has been previously defined}{\@eha}
+    }
+}
+\newcommand{\listfloats}[2]{%
+  \@ifundefined{ext@#1}{\PackageError{ccaption}%
+                        {File extension for #1 is undefined}{\@eha}}{%
+    \@ifundefined{chapter}{%
+      \section*{#2\@mkboth{\MakeUppercase{#2}}{\MakeUppercase{#2}}}}{%
+      \if@twocolumn
+        \@restonecoltrue\onecolumn
+      \else
+        \@restonecolfalse
+      \fi
+      \chapter*{#2\@mkboth{\MakeUppercase{#2}}{\MakeUppercase{#2}}}}%
+    \@starttoc{\@nameuse{ext@#1}}
+    \@ifundefined{chapter}{}{\if@restonecol\twocolumn\fi}
+  }}
+\AtBeginDocument{%
+  \if@contsubfigxx
+\renewcommand{\@subcaption}[2]{%
+  \begingroup
+    \let\label\@gobble
+    \if@contbotsub
+%%%      \def\protect{\string\string\string} % this was the problem
+      \xdef\@subfigcaptionlist{%
+      \@subfigcaptionlist,%
+%%    {\protect\numberline {\@currentlabel}%
+      {\string\numberline {\@currentlabel}%
+       \noexpand{\ignorespaces #2}}}%
+    \else
+      \addcontentsline{\csname ext@#1\endcsname}{#1}%
+        {\protect\numberline{\csname the#1\endcsname}{\ignorespaces #2}}%
+      \gdef\@subfigcaptionlist{}
+    \fi
+  \endgroup
+  \@nameuse{@make#1caption}{\@nameuse{@the#1}}{#2}}
+\let\subfigure\subbottom
+\let\subtable\subtop
+\fi
+}
+\newif\if@contbotsub
+\@contbotsubtrue
+\if@contsubfigxx
+\newcounter{@contsubnum}
+\newcommand{\@contkeep}{\setcounter{@contsubnum}{\value{sub\@captype}}}
+\newcommand{\@contset}{\setcounter{sub\@captype}{\value{@contsubnum}}}
+\newcommand{\subconcluded}{\setcounter{sub\@captype}{0}}
+\newcommand{\subbottom}{%
+  \@contbotsubtrue
+  \bgroup
+    \advance\csname c@\@captype\endcsname\@ne
+    \refstepcounter{sub\@captype}\@contkeep%
+    \leavevmode
+    \@ifnextchar [%
+      {\@subfloat{sub\@captype}}
+      {\@subfloat{sub\@captype}[\@empty]}}
+\newcommand{\contsubbottom}{%
+  \@contbotsubtrue
+\bgroup
+  \@contset
+  \refstepcounter{sub\@captype}\@contkeep%
+  \leavevmode
+  \@ifnextchar [%
+    {\@subfloat{sub\@captype}}
+    {\@subfloat{sub\@captype}[\@empty]}}
+\newcommand{\subtop}{%
+  \@contbotsubfalse
+\bgroup
+    \refstepcounter{sub\@captype}\@contkeep%
+    \leavevmode
+    \@ifnextchar [%
+      {\@subfloat{sub\@captype}}
+      {\@subfloat{sub\@captype}[\@empty]}}
+\newcommand{\contsubtop}{%
+  \@contbotsubfalse
+\bgroup
+  \@contset
+  \refstepcounter{sub\@captype}\@contkeep%
+  \leavevmode
+  \@ifnextchar [%
+    {\@subfloat{sub\@captype}}
+    {\@subfloat{sub\@captype}[\@empty]}}
+\let\subfig@oldcontcaption\@contcaption
+\long\def\@contcaption#1#2{%
+  \subfig@oldcontcaption{#1}{#2}%
+  \@for \@tempa:=\@subfigcaptionlist \do {%
+    \ifx\@empty\@tempa\relax \else
+      \addcontentsline
+        {\@nameuse{ext@sub#1}}%
+        {sub#1}%
+        {\@tempa}%
+     \fi}%
+  \gdef\@subfigcaptionlist{}}
+\let\contsubtable\contsubtop
+\let\contsubfigure\contsubbottom
+\fi
+\endinput
+%%
+%% End of file `ccaption.sty'.
